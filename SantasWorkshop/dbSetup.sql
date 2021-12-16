@@ -52,6 +52,9 @@ FROM accountstations acctStations
 JOIN accounts a ON acctStations.accountId = a.id
 WHERE acctStations.stationId = 10;
 
+
+
+
 /* get all stations by account id */
 SELECT
   s.*,
@@ -59,3 +62,21 @@ SELECT
 FROM accountstations acctStations
 JOIN stations s ON s.id = acctStations.stationId
 WHERE acctStations.accountId = "61bb7496776066b1d032f988"
+
+/* future populating data retrieved from the many-to-many */
+SELECT
+  s.*,
+  acctStations.id AS accountStationId,
+  a.*
+FROM accountstations acctStations
+JOIN stations s ON s.id = acctStations.stationId
+JOIN account a ON a.id = s.creatorId
+WHERE acctStations.accountId = "61bb7496776066b1d032f988"
+
+/* 
+  query
+  _db.Query<AccountStationViewModel, Account, AccountStationViewModel>(sql, (vm, acct)=>{
+    vm.creator = acct;
+    return vm;
+  }, new {accountId}, splitOn: 'id')
+ */
